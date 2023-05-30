@@ -12,11 +12,18 @@ form {
 button {
   cursor: pointer;
   margin: 0 0 2% 2%;
+  border: 1px solid grey;
+  background-color: rgb(255, 247, 236);
+  padding: 1%;
 }
 
 button:hover {
   background-color: brown;
   color: white;
+}
+
+input {
+  height: 20px;
 }
 
 * {
