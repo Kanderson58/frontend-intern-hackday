@@ -37,7 +37,7 @@ function App() {
               Search
             </button>
           </form>
-          {repos.length && repos.map(repo => <RepoCard key={repo.name} repo={repo}/>)}
+          {repos && repos.map(repo => <RepoCard key={repo.name} repo={repo}/>)}
       </div>
     </div>
   );
