@@ -1,0 +1,11 @@
+.repo-commits {
+  height: 500px;
+  overflow-y: scroll;
+}
+
+.commit {
+  border: 1px solid black;
+  border-left: none;
+  border-right: none;
+  width: 500px;
+}
