@@ -1,10 +1,11 @@
 /* eslint-disable */
 import './RepoCard.css'
 
-const RepoCard = ({repo}) => {
+const RepoCard = ({repo, getSingleRepo}) => {
+
  
   return (
-    <div>
+    <div className='repo-card' id={`${repo.commits_url.substring(0, repo.commits_url.length - 6)}`} onClick={(e) => getSingleRepo(e.target.parentNode.parentNode.id)}>
       <ul>
         <li>{repo.name ? 'Name: ' + repo.name : 'Sorry, no name available'}</li>
         <li>{repo.language ? 'Language: ' + repo.language : 'Sorry, no languages on file'}</li>

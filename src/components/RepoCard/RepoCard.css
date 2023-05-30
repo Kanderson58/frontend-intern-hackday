@@ -1,8 +1,15 @@
 li {
   text-transform: capitalize;
   width: 300px;
+  list-style-type: none;
+  padding: 2%;
 }
 
 ul {
   border: black solid 2px;
+  padding: 0;
+}
+
+.repo-card {
+  cursor: pointer;
 }
