@@ -11,6 +11,7 @@ form {
 
 button {
   cursor: pointer;
+  margin: 0 0 2% 2%;
 }
 
 * {
