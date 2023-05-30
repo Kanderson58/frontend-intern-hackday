@@ -3,7 +3,7 @@ li:not(.message) {
 }
 
 li, .message {
-  width: 300px;
+  width: 90%;
   list-style-type: none;
   padding: 2%;
 }
@@ -13,5 +13,7 @@ ul {
 }
 
 .repo-card {
+  width: 500px;
   border: black solid 2px;
+  margin: 2%;
 }
