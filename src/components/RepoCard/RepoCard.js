@@ -1,5 +1,5 @@
 /* eslint-disable */
-import './RepoCard.css'
+import './RepoCard.css';
 
 const RepoCard = ({repo, getSingleRepo}) => {
   return (
@@ -17,4 +17,4 @@ const RepoCard = ({repo, getSingleRepo}) => {
   )
 }
 
-export default RepoCard
+export default RepoCard;

@@ -9,7 +9,7 @@ function App() {
   const [search, setSearch] = useState('');
   const [repos, setRepos] = useState([]);
   const [singleRepoCommits, setSingleRepoCommits] = useState([]);
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
   const submitSearch = (e) => {
@@ -23,9 +23,9 @@ function App() {
       fetch(`https://api.github.com/orgs/${search}/repos`)
         .then(response => {
           if(response.ok) {
-            return response.json()
+            return response.json();
           } else {
-            setError('Sorry, something went wrong.  Try again later.')
+            setError('Sorry, something went wrong.  Try again later.');
           }
         })
         .then(data => {
