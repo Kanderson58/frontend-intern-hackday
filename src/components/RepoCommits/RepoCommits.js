@@ -3,7 +3,10 @@ import './RepoCommits.css'
 
 const RepoCommits = ({commit}) => {
   return (
-    <ul>
+    <ul className='commit'>
+      <li>Commit made by: {commit.commit.author.name}</li>
+      <li className='message'>Commit message: {commit.commit.message}</li>
+      <li>Commit date: {commit.commit.author.date}</li>
     </ul>
   )
 }
