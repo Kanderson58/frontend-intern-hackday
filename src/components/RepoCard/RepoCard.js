@@ -2,10 +2,8 @@
 import './RepoCard.css'
 
 const RepoCard = ({repo, getSingleRepo}) => {
-
- 
   return (
-    <div className='repo-card' id={`${repo.commits_url.substring(0, repo.commits_url.length - 6)}`} onClick={(e) => getSingleRepo(e.target.parentNode.parentNode.id)}>
+    <div className='repo-card'>
       <ul>
         <li>{repo.name ? 'Name: ' + repo.name : 'Sorry, no name available'}</li>
         <li>{repo.language ? 'Language: ' + repo.language : 'Sorry, no languages on file'}</li>
@@ -14,6 +12,7 @@ const RepoCard = ({repo, getSingleRepo}) => {
         <li>{repo.forks_count ? 'Number of forks: ' + repo.forks_count : 'Sorry, unknown number of forks'}</li>
         <li>{repo.created_at ? 'Created on: ' + repo.created_at : 'Sorry, unknown creation date'}</li>
       </ul>
+      <button id={`${repo.commits_url.substring(0, repo.commits_url.length - 6)}`} onClick={(e) => {getSingleRepo(e.target.id)}}>See Commits for this Repository</button>
     </div>
   )
 }
