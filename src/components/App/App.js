@@ -25,15 +25,12 @@ function App() {
           if(response.ok) {
             return response.json()
           } else {
-            // check your load states
-            // hit enter to submit the form
-            // don't worry about making ti cute
-            setError('Sorry, that search has no results.  Try a different search.')
+            setError('Sorry, something went wrong.  Try again later.')
           }
         })
         .then(data => {
           setLoading(false);
-          setRepos(data.sort((a, b) => b.stargazers_count - a.stargazers_count));
+          data ? setRepos(data.sort((a, b) => b.stargazers_count - a.stargazers_count)) : setError('Sorry, that search has no results.  Try a different search.');
         })
     } else {
       setError('Please enter a search term');
@@ -43,6 +40,7 @@ function App() {
   const getSingleRepo = (id) => {
     setError('');
     setLoading(true);
+    setSearch('');
 
     fetch(`${id}`)
       .then(response => {

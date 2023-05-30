@@ -3,7 +3,7 @@ import './RepoCard.css'
 
 const RepoCard = ({repo, getSingleRepo}) => {
   return (
-    <div className='repo-card'>
+    <div className='repo-card' tabIndex='0'>
       <ul>
         <li>{repo.name ? 'Name: ' + repo.name : 'Sorry, no name available'}</li>
         <li>{repo.language ? 'Language: ' + repo.language : 'Sorry, no languages on file'}</li>
