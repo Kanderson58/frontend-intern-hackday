@@ -23,7 +23,7 @@ function App() {
             setError('Sorry, that search has no results.  Try a different search.')
           }
         })
-        .then(data => setRepos(data))
+        .then(data => setRepos(data.sort((a, b) => b.stargazers_count - a.stargazers_count)))
     } else {
       setError('Please enter a search term');
     }
