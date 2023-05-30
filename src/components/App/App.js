@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import './App.css'
 import { useState } from 'react';
 import RepoCard from '../RepoCard/RepoCard';
@@ -5,17 +7,30 @@ import RepoCard from '../RepoCard/RepoCard';
 function App() {
   const [search, setSearch] = useState('');
   const [repos, setRepos] = useState([]);
+  const [error, setError] = useState('');
 
   const submitSearch = (e) => {
     e.preventDefault();
+    setError('');
+    setRepos([]);
 
-    fetch(`https://api.github.com/orgs/${search}/repos`)
-      .then(response => response.json())
-      .then(data => setRepos(data))
+    if(search) {
+      fetch(`https://api.github.com/orgs/${search}/repos`)
+        .then(response => {
+          if(response.ok) {
+            return response.json()
+          } else {
+            setError('Sorry, that search has no results.  Try a different search.')
+          }
+        })
+        .then(data => setRepos(data))
+    } else {
+      setError('Please enter a search term');
+    }
   }
 
   return (
-    <div>
+    <main>
       <h1>Search for a GitHub organization</h1>
         <div>
           <form>
@@ -37,9 +52,10 @@ function App() {
               Search
             </button>
           </form>
-          {repos && repos.map(repo => <RepoCard key={repo.name} repo={repo}/>)}
+          {(repos !== [] && !error) && repos.map(repo => <RepoCard key={repo.name} repo={repo}/>)}
+          {error && <p>{error}</p>}
       </div>
-    </div>
+    </main>
   );
 }
 
