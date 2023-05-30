@@ -1,21 +1,22 @@
 import './App.css'
 import { useState } from 'react';
+import RepoCard from '../RepoCard/RepoCard';
 
 function App() {
   const [search, setSearch] = useState('');
+  const [repos, setRepos] = useState([]);
 
   const submitSearch = (e) => {
     e.preventDefault();
 
-    fetch('https://api.github.com/orgs/Netflix/repos')
+    fetch(`https://api.github.com/orgs/${search}/repos`)
       .then(response => response.json())
-      .then(data => console.log(data))
+      .then(data => setRepos(data))
   }
 
   return (
     <div>
       <h1>Search for a GitHub organization</h1>
-      <div>
         <div>
           <form>
             <div>
@@ -36,7 +37,7 @@ function App() {
               Search
             </button>
           </form>
-        </div>
+          {repos.length && repos.map(repo => <RepoCard key={repo.name} repo={repo}/>)}
       </div>
     </div>
   );
