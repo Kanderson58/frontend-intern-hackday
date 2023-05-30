@@ -1,5 +1,5 @@
 /* eslint-disable */
-import './RepoCommits.css'
+import './RepoCommits.css';
 
 const RepoCommits = ({commit}) => {
   return (
@@ -12,4 +12,4 @@ const RepoCommits = ({commit}) => {
   )
 }
 
-export default RepoCommits
+export default RepoCommits;

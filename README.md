@@ -10,3 +10,5 @@ This React app uses the Github search API to bring you a clean, simple way to se
 Future iterations of this app will:
 - Use React Router in place of conditional rendering to seamlessly navigate from page to page
 - Add additional styling for an even more attractive UI
+- Fully lint the final product
+- Incorporate propTypes or convert to Typescript for type verification
