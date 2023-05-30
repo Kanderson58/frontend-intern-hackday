@@ -14,6 +14,26 @@ button {
   margin: 0 0 2% 2%;
 }
 
+button:hover {
+  background-color: brown;
+  color: white;
+}
+
 * {
   font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+.error {
+  color: rgb(183, 0, 0);
+}
+
+.loading {
+  animation-name: pulse-animation;
+  animation-duration: 200ms;
+  animation-iteration-count: infinite;
+}
+
+@keyframes pulse-animation {
+  0% { box-shadow: 0 0 0 0px rgba(0, 0, 0, 0.2); }
+  100% { box-shadow: 0 0 0 20px rgba(0, 0, 0, 0); }
 }

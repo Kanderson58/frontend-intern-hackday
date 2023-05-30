@@ -77,10 +77,10 @@ function App() {
             </div>
             <button type="submit" className="btn btn-primary" onClick={(e) => submitSearch(e)}>Search</button>
           </form>
-          {loading && <p>Loading...</p>}
+          {loading && <p className='loading'>Loading...</p>}
           {singleRepoCommits.length !== 0 && <div className='repo-commits'>{singleRepoCommits.sort((a, b) => a.commit.author.date - b.commit.author.date).map(commit => <RepoCommits key={commit.commit.author.date} commit={commit}/>)}</div>}
           {(repos !== [] && !error && singleRepoCommits.length === 0) && repos.map(repo => <RepoCard key={repo.name} repo={repo} getSingleRepo={getSingleRepo}/>)}
-          {error && <p>{error}</p>}
+          {error && <p className='error'>{error}</p>}
       </div>
     </main>
   );
