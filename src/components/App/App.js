@@ -24,34 +24,16 @@ function App() {
 
 
     if(search) {
-      const request = await octokit.request(`GET /orgs/${search}/repos`, {
-        per_page: 100
-      });
+      const request = await octokit.paginate(`GET /orgs/${search}/repos`);
+      console.log(request)
 
-      if(request.status === 200) {
+      if(request.length) {
         setLoading(false);
-        request.data ? setRepos(request.data.sort((a, b) => b.stargazers_count - a.stargazers_count)) : setError('Sorry, that search has no results.  Try a different search.');
+        request ? setRepos(request.sort((a, b) => b.stargazers_count - a.stargazers_count)) : setError('Sorry, that search has no results.  Try a different search.');
       } else {
         setError('Sorry, something went wrong.  Try again later.');
       }
     }
-
-    // if(search) {
-    //   fetch(`https://api.github.com/orgs/${search}/repos`)
-    //     .then(response => {
-    //       if(response.ok) {
-    //         return response.json();
-    //       } else {
-    //         setError('Sorry, something went wrong.  Try again later.');
-    //       }
-    //     })
-    //     .then(data => {
-    //       setLoading(false);
-    //       data ? setRepos(data.sort((a, b) => b.stargazers_count - a.stargazers_count)) : setError('Sorry, that search has no results.  Try a different search.');
-    //     })
-    // } else {
-    //   setError('Please enter a search term');
-    // }
   }
 
   const getSingleRepo = (id) => {
