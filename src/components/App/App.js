@@ -4,6 +4,9 @@ import './App.css'
 import { useState } from 'react';
 import RepoCard from '../RepoCard/RepoCard';
 import RepoCommits from '../RepoCommits/RepoCommits';
+import { Octokit } from "octokit";
+
+const octokit = new Octokit({ });
 
 function App() {
   const [search, setSearch] = useState('');
@@ -12,29 +15,43 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const submitSearch = (e) => {
+  const submitSearch = async (e) => {
     e.preventDefault();
     setError('');
     setRepos([]);
     setSingleRepoCommits([]);
     setLoading(true);
 
+
     if(search) {
-      fetch(`https://api.github.com/orgs/${search}/repos`)
-        .then(response => {
-          if(response.ok) {
-            return response.json();
-          } else {
-            setError('Sorry, something went wrong.  Try again later.');
-          }
-        })
-        .then(data => {
-          setLoading(false);
-          data ? setRepos(data.sort((a, b) => b.stargazers_count - a.stargazers_count)) : setError('Sorry, that search has no results.  Try a different search.');
-        })
-    } else {
-      setError('Please enter a search term');
+      const request = await octokit.request(`GET /orgs/${search}/repos`, {
+        per_page: 100
+      });
+
+      if(request.status === 200) {
+        setLoading(false);
+        request.data ? setRepos(request.data.sort((a, b) => b.stargazers_count - a.stargazers_count)) : setError('Sorry, that search has no results.  Try a different search.');
+      } else {
+        setError('Sorry, something went wrong.  Try again later.');
+      }
     }
+
+    // if(search) {
+    //   fetch(`https://api.github.com/orgs/${search}/repos`)
+    //     .then(response => {
+    //       if(response.ok) {
+    //         return response.json();
+    //       } else {
+    //         setError('Sorry, something went wrong.  Try again later.');
+    //       }
+    //     })
+    //     .then(data => {
+    //       setLoading(false);
+    //       data ? setRepos(data.sort((a, b) => b.stargazers_count - a.stargazers_count)) : setError('Sorry, that search has no results.  Try a different search.');
+    //     })
+    // } else {
+    //   setError('Please enter a search term');
+    // }
   }
 
   const getSingleRepo = (id) => {
