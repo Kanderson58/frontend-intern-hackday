@@ -6,7 +6,9 @@ import RepoCard from '../RepoCard/RepoCard';
 import RepoCommits from '../RepoCommits/RepoCommits';
 import { Octokit } from "octokit";
 
-const octokit = new Octokit({ });
+const octokit = new Octokit({ 
+  auth: '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'
+});
 
 function App() {
   const [search, setSearch] = useState('');
@@ -21,7 +23,6 @@ function App() {
     setRepos([]);
     setSingleRepoCommits([]);
     setLoading(true);
-
 
     if(search) {
       const request = await octokit.paginate(`GET /orgs/${search}/repos`);
