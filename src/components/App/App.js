@@ -31,6 +31,7 @@ function App() {
         setLoading(false);
         request ? setRepos(request.sort((a, b) => b.stargazers_count - a.stargazers_count)) : setError('Sorry, that search has no results.  Try a different search.');
       } else {
+        setLoading(false);
         setError('Sorry, something went wrong.  Try again later.');
       }
     }
@@ -42,7 +43,6 @@ function App() {
     setSearch('');
 
     const endpoint = id.split('/')
-    console.log('/' + endpoint[3] + '/' + endpoint[4] + '/' + endpoint[5] + '/' + endpoint[6])
 
     const request = await octokit.paginate(`GET ${'/' + endpoint[3] + '/' + endpoint[4] + '/' + endpoint[5] + '/' + endpoint[6]}`);
 
@@ -50,6 +50,7 @@ function App() {
       setLoading(false);
       setSingleRepoCommits(request);
     } else {
+      setLoading(false);
       setError('Sorry, there was an error.  Try again later.')
     }
   }
@@ -76,7 +77,7 @@ function App() {
             <button type="submit" className="btn btn-primary" onClick={(e) => submitSearch(e)}>Search</button>
           </form>
           {loading && <p className='loading'>Loading...</p>}
-          {singleRepoCommits.length !== 0 && <div className='repo-commits'>{singleRepoCommits.sort((a, b) => a.commit.author.date - b.commit.author.date).map(commit => <RepoCommits key={commit.commit.author.date} commit={commit}/>)}</div>}
+          {singleRepoCommits.length !== 0 && <div className='repo-commits'>{singleRepoCommits.sort((a, b) => a.commit.author.date - b.commit.author.date).map((commit, index) => <RepoCommits key={index} commit={commit}/>)}</div>}
           {(repos !== [] && !error && singleRepoCommits.length === 0) && repos.map(repo => <RepoCard key={repo.name} repo={repo} getSingleRepo={getSingleRepo}/>)}
           {error && <p className='error'>{error}</p>}
       </div>
