@@ -26,7 +26,6 @@ function App() {
 
     if(search) {
       const request = await octokit.paginate(`GET /orgs/${search}/repos`);
-      console.log(request)
 
       if(request.length) {
         setLoading(false);
@@ -37,23 +36,22 @@ function App() {
     }
   }
 
-  const getSingleRepo = (id) => {
+  const getSingleRepo = async (id) => {
     setError('');
     setLoading(true);
     setSearch('');
 
-    fetch(`${id}`)
-      .then(response => {
-        if(response.ok) {
-          return response.json()
-        } else {
-          setError('Sorry, there was an error. Try again later.');
-        }
-      })
-      .then(data => {
-        setLoading(false);
-        setSingleRepoCommits(data);
-      });
+    const endpoint = id.split('/')
+    console.log('/' + endpoint[3] + '/' + endpoint[4] + '/' + endpoint[5] + '/' + endpoint[6])
+
+    const request = await octokit.paginate(`GET ${'/' + endpoint[3] + '/' + endpoint[4] + '/' + endpoint[5] + '/' + endpoint[6]}`);
+
+    if(request.length) {
+      setLoading(false);
+      setSingleRepoCommits(request);
+    } else {
+      setError('Sorry, there was an error.  Try again later.')
+    }
   }
 
   return (
