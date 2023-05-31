@@ -4,6 +4,11 @@ import './App.css'
 import { useState } from 'react';
 import RepoCard from '../RepoCard/RepoCard';
 import RepoCommits from '../RepoCommits/RepoCommits';
+import { Octokit } from "octokit";
+
+const octokit = new Octokit({ 
+  auth: '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'
+});
 
 function App() {
   const [search, setSearch] = useState('');
@@ -12,7 +17,7 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const submitSearch = (e) => {
+  const submitSearch = async (e) => {
     e.preventDefault();
     setError('');
     setRepos([]);
@@ -20,40 +25,34 @@ function App() {
     setLoading(true);
 
     if(search) {
-      fetch(`https://api.github.com/orgs/${search}/repos`)
-        .then(response => {
-          if(response.ok) {
-            return response.json();
-          } else {
-            setError('Sorry, something went wrong.  Try again later.');
-          }
-        })
-        .then(data => {
-          setLoading(false);
-          data ? setRepos(data.sort((a, b) => b.stargazers_count - a.stargazers_count)) : setError('Sorry, that search has no results.  Try a different search.');
-        })
-    } else {
-      setError('Please enter a search term');
+      const request = await octokit.paginate(`GET /orgs/${search}/repos`);
+
+      if(request.length) {
+        setLoading(false);
+        request ? setRepos(request.sort((a, b) => b.stargazers_count - a.stargazers_count)) : setError('Sorry, that search has no results.  Try a different search.');
+      } else {
+        setLoading(false);
+        setError('Sorry, something went wrong.  Try again later.');
+      }
     }
   }
 
-  const getSingleRepo = (id) => {
+  const getSingleRepo = async (id) => {
     setError('');
     setLoading(true);
     setSearch('');
 
-    fetch(`${id}`)
-      .then(response => {
-        if(response.ok) {
-          return response.json()
-        } else {
-          setError('Sorry, there was an error. Try again later.');
-        }
-      })
-      .then(data => {
-        setLoading(false);
-        setSingleRepoCommits(data);
-      });
+    const endpoint = id.split('/')
+
+    const request = await octokit.paginate(`GET ${'/' + endpoint[3] + '/' + endpoint[4] + '/' + endpoint[5] + '/' + endpoint[6]}`);
+
+    if(request.length) {
+      setLoading(false);
+      setSingleRepoCommits(request);
+    } else {
+      setLoading(false);
+      setError('Sorry, there was an error.  Try again later.')
+    }
   }
 
   return (
@@ -78,7 +77,7 @@ function App() {
             <button type="submit" className="btn btn-primary" onClick={(e) => submitSearch(e)}>Search</button>
           </form>
           {loading && <p className='loading'>Loading...</p>}
-          {singleRepoCommits.length !== 0 && <div className='repo-commits'>{singleRepoCommits.sort((a, b) => a.commit.author.date - b.commit.author.date).map(commit => <RepoCommits key={commit.commit.author.date} commit={commit}/>)}</div>}
+          {singleRepoCommits.length !== 0 && <div className='repo-commits'>{singleRepoCommits.sort((a, b) => a.commit.author.date - b.commit.author.date).map((commit, index) => <RepoCommits key={index} commit={commit}/>)}</div>}
           {(repos !== [] && !error && singleRepoCommits.length === 0) && repos.map(repo => <RepoCard key={repo.name} repo={repo} getSingleRepo={getSingleRepo}/>)}
           {error && <p className='error'>{error}</p>}
       </div>
